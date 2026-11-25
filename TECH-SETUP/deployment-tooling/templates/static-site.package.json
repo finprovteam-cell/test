@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-static.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "npm run build && npm run check",
+    "release": "node scripts/build-release.mjs",
+    "deploy": "node scripts/deploy.mjs"
+  }
+}

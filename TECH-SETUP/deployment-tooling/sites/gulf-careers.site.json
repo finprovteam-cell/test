@@ -1,0 +1,15 @@
+{
+  "site": "gulf-careers",
+  "sourceDir": ".",
+  "artifactDir": "dist",
+  "include": [
+    "index.html",
+    "tracking.js",
+    "site-config.js",
+    "assets/*"
+  ],
+  "urlMappings": [
+    { "prefix": "/gulf-careers/", "artifactPrefix": "" }
+  ],
+  "expectedTags": []
+}

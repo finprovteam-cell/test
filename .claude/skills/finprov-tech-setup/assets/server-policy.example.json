@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "targets": [
+    {
+      "production_url": "https://accountingcourse.in/new-course/",
+      "document_root": "/home/accountingcourse/public_html",
+      "allow_domain_root": false
+    }
+  ]
+}

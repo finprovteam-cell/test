@@ -1,0 +1,45 @@
+{
+  "name": "Finprov landing-page workspace",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "node",
+  "forwardPorts": [
+    4173,
+    4174,
+    5173,
+    8000
+  ],
+  "portsAttributes": {
+    "4173": {
+      "label": "Private campaign preview",
+      "onAutoForward": "notify",
+      "visibility": "private"
+    },
+    "4174": {
+      "label": "Private campaign preview",
+      "onAutoForward": "notify",
+      "visibility": "private"
+    },
+    "5173": {
+      "label": "Private campaign preview",
+      "onAutoForward": "notify",
+      "visibility": "private"
+    },
+    "8000": {
+      "label": "Private campaign preview",
+      "onAutoForward": "notify",
+      "visibility": "private"
+    }
+  },
+  "postCreateCommand": "python3 scripts/check-toolkit.py && node .claude/skills/finprov-swipe-page/scripts/test_tracking.mjs",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.exclude": {
+          "**/.git": true
+        }
+      }
+    }
+  }
+}

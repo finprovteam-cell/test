@@ -1,0 +1,11 @@
+{
+  "name": "landing-deployment-tooling",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --test tests/tooling.test.mjs",
+    "test:receiver": "php tests/receiver_test.php",
+    "test": "npm run check && npm run test:receiver"
+  }
+}

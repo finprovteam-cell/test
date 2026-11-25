@@ -1,0 +1,4 @@
+Place the existing index.html, website ZIP, or source folder in this INPUT directory.
+
+If the existing page is public, no file is required: give its URL directly to Claude Code.
+

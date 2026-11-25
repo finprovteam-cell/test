@@ -1,0 +1,5 @@
+interface:
+  display_name: "Finprov Swipe Page"
+  short_description: "Build secure, tracked Finprov lead pages"
+  brand_color: "#0B5FD7"
+  default_prompt: "Use $finprov-swipe-page to redesign, integrate, test, and package this Finprov lead-generation page for deployment."

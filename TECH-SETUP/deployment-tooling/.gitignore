@@ -1,0 +1,5 @@
+node_modules/
+dist/
+release.json
+release.json.tmp-*
+*.stage-*

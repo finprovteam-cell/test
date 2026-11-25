@@ -1,0 +1,22 @@
+name: Toolkit checks (no deployment)
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  toolkit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: python3 scripts/check-toolkit.py
+      - run: php .claude/skills/finprov-tech-setup/tests/test_setup_request.php
+      - run: node .claude/skills/finprov-swipe-page/scripts/test_tracking.mjs
+      - name: Check integration PHP syntax
+        run: |
+          php -l .claude/skills/finprov-swipe-page/assets/release-template/api/lead.php
+          php -l .claude/skills/finprov-swipe-page/assets/release-template/api/config.example.php

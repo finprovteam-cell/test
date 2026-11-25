@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.DS_Store
+__MACOSX/
+api/config.php
+site/api/config.php
+**/api/storage/*
+!**/api/storage/.htaccess
+*.pem
+*.key
+release.json

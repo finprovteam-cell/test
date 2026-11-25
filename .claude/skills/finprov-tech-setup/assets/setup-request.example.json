@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "repository": "https://github.com/finprovteam-cell/REPLACE-CAMPAIGN-REPO",
+  "campaign": "REPLACE campaign name",
+  "production_url": "",
+  "design_approved": false,
+  "thank_you_path": "",
+  "tracking": {
+    "mode": "gtm",
+    "gtm_id": "",
+    "ga4_id": "",
+    "clarity_id": ""
+  }
+}

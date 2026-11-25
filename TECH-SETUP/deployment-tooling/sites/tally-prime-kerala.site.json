@@ -1,0 +1,21 @@
+{
+  "site": "tally-prime-kerala",
+  "sourceDir": ".",
+  "artifactDir": "dist",
+  "include": [
+    "index.html",
+    "favicon.*",
+    "icons.svg",
+    "assets/*",
+    "brand/*",
+    "brochures/*",
+    "logos/*",
+    "photos/*",
+    "photos/learners/*",
+    "photos/convocation/*"
+  ],
+  "urlMappings": [
+    { "prefix": "/courses/tally-prime-kerala/", "artifactPrefix": "" }
+  ],
+  "expectedTags": []
+}

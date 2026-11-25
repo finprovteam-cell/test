@@ -1,0 +1,85 @@
+name: Check and deploy landing page
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: landing-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: node scripts/check.mjs
+      - run: node --test scripts/verify-live.test.mjs
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/smoke.mjs
+      - run: node scripts/build-release.mjs --out release.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: checked-release
+          path: release.json
+          retention-days: 7
+          if-no-files-found: error
+
+  deploy:
+    needs: check
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: checked-release
+      - name: Configure restricted deploy identity
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          umask 077
+          mkdir -p "$RUNNER_TEMP/landing-ssh"
+          printf '%s\n' "$DEPLOY_SSH_KEY" > "$RUNNER_TEMP/landing-ssh/key"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$RUNNER_TEMP/landing-ssh/known_hosts"
+      - name: Deploy the checked artifact
+        env:
+          DEPLOY_HOST: finprov.smartserver247.com
+          DEPLOY_PORT: '9895'
+          DEPLOY_USER: accountingcourse
+          DEPLOY_SSH_KEY_PATH: ${{ runner.temp }}/landing-ssh/key
+          DEPLOY_KNOWN_HOSTS_PATH: ${{ runner.temp }}/landing-ssh/known_hosts
+        run: node scripts/deploy.mjs release.json
+      - name: Verify deployed version and page
+        env:
+          DEPLOY_HOST: finprov.smartserver247.com
+          DEPLOY_PORT: '9895'
+          DEPLOY_USER: accountingcourse
+          DEPLOY_SSH_KEY_PATH: ${{ runner.temp }}/landing-ssh/key
+          DEPLOY_KNOWN_HOSTS_PATH: ${{ runner.temp }}/landing-ssh/known_hosts
+        run: node scripts/verify-live.mjs release.json
+      - name: Remove temporary deploy identity
+        if: always()
+        run: |
+          rm -f "$RUNNER_TEMP/landing-ssh/key" "$RUNNER_TEMP/landing-ssh/known_hosts"

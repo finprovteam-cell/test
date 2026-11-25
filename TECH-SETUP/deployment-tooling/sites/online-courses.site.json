@@ -1,0 +1,14 @@
+{
+  "site": "online-courses",
+  "sourceDir": ".",
+  "artifactDir": "dist",
+  "include": [
+    "index.html",
+    "site-config.js",
+    "assets/*"
+  ],
+  "urlMappings": [
+    { "prefix": "/courses/online-courses/", "artifactPrefix": "" }
+  ],
+  "expectedTags": []
+}
